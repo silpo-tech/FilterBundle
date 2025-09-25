@@ -19,7 +19,7 @@ class BooleanFilter extends AbstractFilter implements FilterInterface
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (
@@ -57,9 +57,9 @@ class BooleanFilter extends AbstractFilter implements FilterInterface
         return DBALTypes::BOOLEAN === (string) $this->getDoctrineFieldType($property, $resourceClass);
     }
 
-    private function normalizeValue($value): bool|null
+    private function normalizeValue($value): ?bool
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 

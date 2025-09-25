@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\TestCase;
 
-use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,7 +19,7 @@ abstract class ValidatorTestCase extends TestCase
     public function testValidation(
         mixed $value,
         mixed $constraint,
-        string|null $expectedException = null,
+        ?string $expectedException = null,
         bool $expectedViolation = false,
     ): void {
         $validator = $this->getValidator();
@@ -40,7 +39,7 @@ abstract class ValidatorTestCase extends TestCase
                 $this->expectNotToPerformAssertions();
 
                 $executionContext->method('buildViolation')
-                    ->willThrowException(new Exception())
+                    ->willThrowException(new \Exception())
                 ;
             }
         }

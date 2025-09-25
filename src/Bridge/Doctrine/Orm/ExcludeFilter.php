@@ -19,7 +19,7 @@ class ExcludeFilter extends AbstractFilter implements FilterInterface, SearchFil
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (null === $value || !$this->isPropertyMapped($property, $resourceClass, true)) {
@@ -66,7 +66,7 @@ class ExcludeFilter extends AbstractFilter implements FilterInterface, SearchFil
     /**
      * Normalize the values array.
      */
-    protected function normalizeValues(array $values): array|null
+    protected function normalizeValues(array $values): ?array
     {
         foreach ($values as $key => $value) {
             if (!is_int($key) || !is_string($value)) {

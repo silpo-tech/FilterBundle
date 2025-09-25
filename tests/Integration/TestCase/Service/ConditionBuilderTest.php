@@ -8,14 +8,12 @@ use App\Tests\Integration\Common\Entity\TestEntity;
 use App\Tests\Integration\Common\LocaleFilterDTO;
 use App\Tests\Integration\Common\MatchOrNotNullFilterDTO;
 use App\Tests\Integration\Common\TypesFilterDTO;
-use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\Query\Expr\Orx;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use FilterBundle\Service\ConditionBuilder;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -33,7 +31,7 @@ class ConditionBuilderTest extends KernelTestCase
         array $expectedSorts = [],
         string $filterDTO = TypesFilterDTO::class,
         bool $expectedEmptyConditions = false,
-        string|null $expectedException = null,
+        ?string $expectedException = null,
     ): void {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);
@@ -85,14 +83,14 @@ class ConditionBuilderTest extends KernelTestCase
                         }
                     }
 
-                    $part = $part->getParts()[0] . ' ' . $separator;
+                    $part = $part->getParts()[0].' '.$separator;
                 }
 
                 foreach ($params as $param) {
-                    $paramName = ':' . $param->getName();
+                    $paramName = ':'.$param->getName();
                     $paramValue = $param->getValue();
 
-                    if ($paramValue instanceof DateTimeInterface) {
+                    if ($paramValue instanceof \DateTimeInterface) {
                         $paramValue = $paramValue->format('Y-m-d');
                     }
 
@@ -318,7 +316,7 @@ class ConditionBuilderTest extends KernelTestCase
             'expectedConditions' => [],
             'expectedSorts' => [],
             'expectedEmptyConditions' => true,
-            'expectedException' => InvalidArgumentException::class,
+            'expectedException' => \InvalidArgumentException::class,
         ];
 
         yield 'Exclude filter with many values' => [

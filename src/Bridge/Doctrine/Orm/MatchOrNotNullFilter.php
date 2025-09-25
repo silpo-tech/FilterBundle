@@ -17,7 +17,7 @@ class MatchOrNotNullFilter extends AbstractFilter implements FilterInterface
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ): void {
         $alias = $qb->getRootAliases()[0];

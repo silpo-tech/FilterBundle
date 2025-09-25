@@ -8,6 +8,6 @@ class NullFilter extends NullableFilter
 {
     protected function normalizeValue($value): bool
     {
-        return $value === null;
+        return null === $value;
     }
 }

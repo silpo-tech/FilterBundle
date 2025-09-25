@@ -12,9 +12,6 @@ use FilterBundle\Bridge\Doctrine\Orm\OrderFilter;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use FilterBundle\Dto\OrderItem;
 use FilterBundle\Dto\StrategyInterface;
-use ReflectionAttribute;
-use ReflectionObject;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class ConditionBuilder
@@ -35,7 +32,7 @@ class ConditionBuilder
         $configs = $this->getFilterConfigurations($filterDto);
 
         foreach ($configs as $propertyName => $propertyFilters) {
-            $getterFunction = 'get' . ucfirst((string) $propertyName);
+            $getterFunction = 'get'.ucfirst((string) $propertyName);
 
             if (method_exists($filterDto, $getterFunction)) {
                 $propertyValue = $filterDto->{$getterFunction}();
@@ -45,7 +42,7 @@ class ConditionBuilder
 
             foreach ($propertyFilters as $config) {
                 if (!$this->filterLocator->has($config->filterClass)) {
-                    throw new RuntimeException(sprintf('Filter "%s" is not registered', $config->filterClass));
+                    throw new \RuntimeException(sprintf('Filter "%s" is not registered', $config->filterClass));
                 }
 
                 /** @var FilterInterface $filter */
@@ -65,6 +62,7 @@ class ConditionBuilder
                                 $orderItem->direction,
                             );
                         }
+
                         break;
                     default:
                         $strategy = $config->strategy;
@@ -95,7 +93,7 @@ class ConditionBuilder
             if (!is_string($field)) {
                 continue;
             }
-            if ($field[0] === '-') {
+            if ('-' === $field[0]) {
                 $field = substr($field, 1);
                 $direction = 'DESC';
             } else {
@@ -112,7 +110,7 @@ class ConditionBuilder
     private function getFilterConfigurations(object $object): array
     {
         $result = [];
-        $reflObj = new ReflectionObject($object);
+        $reflObj = new \ReflectionObject($object);
         $attributes = $reflObj->getAttributes(ApiFilter::class);
         foreach ($attributes as $k => $attribute) {
             $result[$k][] = $attribute;
@@ -122,7 +120,7 @@ class ConditionBuilder
             foreach ([ApiFilter::class, ApiSort::class] as $className) {
                 $attributes = $reflectionProperty->getAttributes($className);
                 foreach ($attributes as $attribute) {
-                    if ($attribute instanceof ReflectionAttribute) {
+                    if ($attribute instanceof \ReflectionAttribute) {
                         $result[$reflectionProperty->getName()][] = $attribute->newInstance();
                     }
                 }

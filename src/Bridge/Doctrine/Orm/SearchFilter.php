@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace FilterBundle\Bridge\Doctrine\Orm;
 
-use Closure;
 use Doctrine\DBAL\Types\Types as DBALTypes;
 use Doctrine\ORM\QueryBuilder;
 use FilterBundle\Bridge\Doctrine\Common\SearchFilterInterface;
 use FilterBundle\Bridge\Doctrine\Orm\PopertyHelperTrait as OrmPropertyHelperTrait;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryBuilderHelper;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use InvalidArgumentException;
 
 class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilterInterface
 {
@@ -23,7 +21,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = self::STRATEGY_EXACT,
+        ?string $strategy = self::STRATEGY_EXACT,
         array $arguments = [],
     ) {
         if (null === $value || !$this->isPropertyMapped($property, $resourceClass, true)) {
@@ -52,7 +50,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
             if (!$this->hasValidValues($values, $this->getDoctrineFieldType($property, $resourceClass))) {
                 $message = sprintf('Values for field "%s" are not valid according to the type.', $field);
                 $this->logger->notice('Invalid filter ignored', [
-                    'exception' => new InvalidArgumentException($message),
+                    'exception' => new \InvalidArgumentException($message),
                 ]);
 
                 return;
@@ -77,7 +75,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
                         $strategy,
                         $property,
                     ),
-                    'exception' => new InvalidArgumentException($message),
+                    'exception' => new \InvalidArgumentException($message),
                 ]);
 
                 return;
@@ -87,7 +85,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
             $valueParameter = $nameGenerator->generateParameterName($field);
 
             $qb
-                ->andWhere(sprintf($wrapCase('%s.%s') . ' IN (:%s)', $alias, $field, $valueParameter))
+                ->andWhere(sprintf($wrapCase('%s.%s').' IN (:%s)', $alias, $field, $valueParameter))
                 ->setParameter($valueParameter, $caseSensitive ? $values : array_map('strtolower', $values))
             ;
         }
@@ -103,7 +101,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
         if (!$this->hasValidValues($values, $doctrineTypeField)) {
             $message = sprintf('Values for field "%s" are not valid according to the doctrine type.', $field);
             $this->logger->notice('Invalid filter ignored', [
-                'exception' => new InvalidArgumentException($message),
+                'exception' => new \InvalidArgumentException($message),
             ]);
 
             return;
@@ -135,7 +133,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
     /**
      * Normalize the values array.
      */
-    protected function normalizeValues(array $values): array|null
+    protected function normalizeValues(array $values): ?array
     {
         foreach ($values as $key => $value) {
             if (!is_int($key) || !is_string($value)) {
@@ -173,7 +171,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
     /**
      * Adds where clause according to the strategy.
      *
-     * @throws InvalidArgumentException If strategy does not exist
+     * @throws \InvalidArgumentException If strategy does not exist
      */
     protected function addWhereByStrategy(
         string $strategy,
@@ -190,23 +188,28 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
         switch ($strategy) {
             case null:
             case self::STRATEGY_EXACT:
-                $format = $wrapCase('%s.%s') . ' = ' . $wrapCase(':%s');
+                $format = $wrapCase('%s.%s').' = '.$wrapCase(':%s');
+
                 break;
             case self::STRATEGY_PARTIAL:
-                $format = $wrapCase('%s.%s') . ' LIKE ' . $wrapCase('CONCAT(\'%%\', :%s, \'%%\')');
+                $format = $wrapCase('%s.%s').' LIKE '.$wrapCase('CONCAT(\'%%\', :%s, \'%%\')');
+
                 break;
             case self::STRATEGY_START:
-                $format = $wrapCase('%s.%s') . ' LIKE ' . $wrapCase('CONCAT(:%s, \'%%\')');
+                $format = $wrapCase('%s.%s').' LIKE '.$wrapCase('CONCAT(:%s, \'%%\')');
+
                 break;
             case self::STRATEGY_END:
-                $format = $wrapCase('%s.%s') . ' LIKE ' . $wrapCase('CONCAT(\'%%\', :%s)');
+                $format = $wrapCase('%s.%s').' LIKE '.$wrapCase('CONCAT(\'%%\', :%s)');
+
                 break;
             case self::STRATEGY_WORD_START:
-                $format = $wrapCase('%1$s.%2$s') . ' LIKE ' . $wrapCase('CONCAT(:%3$s, \'%%\')') . ' OR ';
-                $format .= $wrapCase('%1$s.%2$s') . ' LIKE ' . $wrapCase('CONCAT(\'%% \', :%3$s, \'%%\')');
+                $format = $wrapCase('%1$s.%2$s').' LIKE '.$wrapCase('CONCAT(:%3$s, \'%%\')').' OR ';
+                $format .= $wrapCase('%1$s.%2$s').' LIKE '.$wrapCase('CONCAT(\'%% \', :%3$s, \'%%\')');
+
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('strategy %s does not exist.', $strategy));
+                throw new \InvalidArgumentException(sprintf('strategy %s does not exist.', $strategy));
         }
         $queryBuilder
             ->andWhere(sprintf($format, $alias, $field, $valueParameter))
@@ -221,7 +224,7 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
      * For example, "o.name" will get wrapped into "LOWER(o.name)" when $caseSensitive
      * is false.
      */
-    protected function createWrapCase(bool $caseSensitive): Closure
+    protected function createWrapCase(bool $caseSensitive): \Closure
     {
         return static function (string $expr) use ($caseSensitive): string {
             if ($caseSensitive) {

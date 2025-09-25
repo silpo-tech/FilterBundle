@@ -18,7 +18,7 @@ class NullableFilter extends AbstractFilter implements FilterInterface
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (!$this->isPropertyMapped($property, $resourceClass, true) || !$this->normalizeValue($value)) {

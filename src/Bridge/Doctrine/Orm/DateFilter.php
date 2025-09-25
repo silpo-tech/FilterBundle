@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace FilterBundle\Bridge\Doctrine\Orm;
 
 use DateTime;
-use DateTimeImmutable;
-use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\DBAL\Types\Types as DBALType;
 use Doctrine\ORM\QueryBuilder;
-use Exception;
 use FilterBundle\Bridge\Doctrine\Common\DateFilterInterface;
 use FilterBundle\Bridge\Doctrine\Orm\PopertyHelperTrait as OrmPropertyHelperTrait;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use InvalidArgumentException;
 
 class DateFilter extends AbstractFilter implements FilterInterface, DateFilterInterface
 {
@@ -37,7 +32,7 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         // Expect $values to be an array having the period as keys and the date value as values
@@ -137,13 +132,14 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
         string $field,
         string $operator,
         string $value,
-        string|null $nullManagement = null,
-        string|null $type = null,
+        ?string $nullManagement = null,
+        ?string $type = null,
         array $arguments = [],
     ) {
         $type = (string) $type;
+
         try {
-            $value = !str_contains($type, '_immutable') ? new DateTime($value) : new DateTimeImmutable($value);
+            $value = !str_contains($type, '_immutable') ? new \DateTime($value) : new \DateTimeImmutable($value);
 
             // convert date to datetime if compareDateToDateTime is true
             if (isset($arguments['compareDateToDateTime']) && true === $arguments['compareDateToDateTime']) {
@@ -153,12 +149,12 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
             if (isset($arguments['convertToTz']) && is_string($arguments['convertToTz'])) {
                 $this->convertDateTimeZone($value, $arguments['convertToTz']);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Silently ignore this filter if it can not be transformed to a \DateTime
             $this->logger->notice(
                 'Invalid filter ignored',
                 [
-                    'exception' => new InvalidArgumentException(
+                    'exception' => new \InvalidArgumentException(
                         sprintf(
                             'The field "%s" has a wrong date format. Use one accepted by the \DateTime constructor',
                             $field,
@@ -237,9 +233,9 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
     }
 
     /**
-     * @param DateTimeImmutable|DateTime $date
+     * @param \DateTimeImmutable|\DateTime $date
      *
-     * @return DateTimeImmutable|DateTime
+     * @return \DateTimeImmutable|\DateTime
      */
     private function convertDateToDateTime($date, string $operator)
     {
@@ -260,13 +256,13 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
         return $date;
     }
 
-    private function convertDateTimeZone(DateTimeInterface $dateTime, string $timezone): void
+    private function convertDateTimeZone(\DateTimeInterface $dateTime, string $timezone): void
     {
-        if ($timezone === self::DEFAULT_TIME_ZONE) {
+        if (self::DEFAULT_TIME_ZONE === $timezone) {
             $timezone = date_default_timezone_get();
         }
 
-        $dateTime->setTimezone(new DateTimeZone($timezone));
+        $dateTime->setTimezone(new \DateTimeZone($timezone));
     }
 
     /**

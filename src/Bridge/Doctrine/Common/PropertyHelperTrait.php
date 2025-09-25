@@ -47,7 +47,7 @@ trait PropertyHelperTrait
      *   - associations: array of associations according to nesting order
      *   - field: string holding the actual field (leaf node)
      */
-    protected function splitPropertyParts(string $property, string|null $resourceClass = null): array
+    protected function splitPropertyParts(string $property, ?string $resourceClass = null): array
     {
         $parts = explode('.', $property);
 

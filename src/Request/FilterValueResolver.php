@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FilterBundle\Request;
 
-use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
 use FilterBundle\Annotation\FilterMapper;
 use FilterBundle\Dto\OrderInterface;
 use FilterBundle\Dto\StrategyInterface;
 use MapperBundle\Mapper\MapperInterface;
+use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -56,13 +56,7 @@ class FilterValueResolver implements ValueResolverInterface
         );
 
         if (count($errors)) {
-            throw new ValidationException(
-                (array) (
-                    method_exists($errors, 'getIterator')
-                    ? $errors->getIterator()
-                    : $errors
-                ),
-            );
+            throw new ValidationException((array) (method_exists($errors, 'getIterator') ? $errors->getIterator() : $errors));
         }
 
         return [$dto];

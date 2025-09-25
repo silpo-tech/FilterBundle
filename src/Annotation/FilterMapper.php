@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace FilterBundle\Annotation;
 
-use Attribute;
 use FilterBundle\Request\FilterValueResolver;
 use Symfony\Component\HttpKernel\Attribute\ValueResolver;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_PARAMETER)]
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_PARAMETER)]
 class FilterMapper extends ValueResolver
 {
     public ArgumentMetadata $metadata;

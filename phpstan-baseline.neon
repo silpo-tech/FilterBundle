@@ -1,2 +1,121 @@
 parameters:
 	ignoreErrors:
+		-
+			message: '#^Method FilterBundle\\Bridge\\Doctrine\\Orm\\AbstractFilter\:\:getClassMetadata\(\) should return Doctrine\\ORM\\Mapping\\ClassMetadata but returns Doctrine\\Persistence\\Mapping\\ClassMetadata\<object\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Bridge/Doctrine/Orm/AbstractFilter.php
+
+		-
+			message: '#^Method FilterBundle\\Bridge\\Doctrine\\Orm\\AbstractFilter\:\:getDoctrineFieldType\(\) has invalid return type FilterBundle\\Bridge\\Doctrine\\Common\\Type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Bridge/Doctrine/Orm/AbstractFilter.php
+
+		-
+			message: '#^Call to an undefined method DateTimeInterface\:\:setTimezone\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Bridge/Doctrine/Orm/DateFilter.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$type with type Doctrine\\DBAL\\Types\\Types\|string is not subtype of native type string\|null\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Bridge/Doctrine/Orm/DateFilter.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between false and array will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Bridge/Doctrine/Orm/Util/QueryBuilderHelper.php
+
+		-
+			message: '#^Trait FilterBundle\\Dto\\OrderTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Dto/OrderTrait.php
+
+		-
+			message: '#^Trait FilterBundle\\Dto\\StrategyTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Dto/StrategyTrait.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Request/FilterValueResolver.php
+
+		-
+			message: '#^Parameter \#2 \$callback of function array_filter expects \(callable\(mixed\)\: bool\)\|null, Closure\(mixed\)\: \(array\<mixed, mixed\>\|int\<0, max\>\) given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Request/FilterValueResolver.php
+
+		-
+			message: '#^Access to an undefined property FilterBundle\\Annotation\\ApiFilter\:\:\$map\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Service/ConditionBuilder.php
+
+		-
+			message: '#^Instanceof between ReflectionAttribute\<FilterBundle\\Annotation\\ApiFilter\|FilterBundle\\Annotation\\ApiSort\> and ReflectionAttribute will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Service/ConditionBuilder.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$boolean is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$child is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$date is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$id is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$locale is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$null is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$nullable is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$numeric is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\ORM\\Query\\Expr\\Composite\:\:getParts\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Integration/TestCase/Service/ConditionBuilderTest.php

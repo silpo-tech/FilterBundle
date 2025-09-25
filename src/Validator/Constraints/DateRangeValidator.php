@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FilterBundle\Validator\Constraints;
 
-use DateTime;
 use FilterBundle\Bridge\Doctrine\Common\DateFilterInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,7 +18,7 @@ class DateRangeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, DateRange::class);
         }
 
-        if ($value === null) {
+        if (null === $value) {
             return;
         }
 
@@ -37,8 +36,8 @@ class DateRangeValidator extends ConstraintValidator
             return;
         }
 
-        $from = DateTime::createFromFormat($constraint->format, $value[DateFilterInterface::PARAMETER_AFTER]);
-        $to = DateTime::createFromFormat($constraint->format, $value[DateFilterInterface::PARAMETER_BEFORE]);
+        $from = \DateTime::createFromFormat($constraint->format, $value[DateFilterInterface::PARAMETER_AFTER]);
+        $to = \DateTime::createFromFormat($constraint->format, $value[DateFilterInterface::PARAMETER_BEFORE]);
 
         if ($from > $to) {
             $this->context->buildViolation($constraint->invalidDateRangeMessage)
@@ -89,7 +88,7 @@ class DateRangeValidator extends ConstraintValidator
                 return false;
             }
 
-            $date = DateTime::createFromFormat($format, $timestamp);
+            $date = \DateTime::createFromFormat($format, $timestamp);
 
             if (!$date || $date->format($format) !== $timestamp) {
                 return false;

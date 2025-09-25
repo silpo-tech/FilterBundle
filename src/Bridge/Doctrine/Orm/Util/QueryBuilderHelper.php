@@ -7,8 +7,6 @@ namespace FilterBundle\Bridge\Doctrine\Orm\Util;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Generator;
-use LogicException;
 
 final class QueryBuilderHelper
 {
@@ -24,11 +22,11 @@ final class QueryBuilderHelper
         QueryNameGeneratorInterface $queryNameGenerator,
         string $alias,
         string $association,
-        string|null $joinType = null,
-        string|null $conditionType = null,
-        string|null $condition = null,
-        string|null $originAlias = null,
-        string|null $newAlias = null,
+        ?string $joinType = null,
+        ?string $conditionType = null,
+        ?string $condition = null,
+        ?string $originAlias = null,
+        ?string $newAlias = null,
     ): string {
         $join = self::getExistingJoin($queryBuilder, $alias, $association, $originAlias);
 
@@ -57,7 +55,7 @@ final class QueryBuilderHelper
         ManagerRegistry $managerRegistry,
     ): string {
         if (!in_array($alias, $queryBuilder->getAllAliases(), true)) {
-            throw new LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
+            throw new \LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
         }
 
         $rootAliasMap = self::mapRootAliases($queryBuilder->getRootAliases(), $queryBuilder->getRootEntities());
@@ -73,7 +71,7 @@ final class QueryBuilderHelper
         }
 
         if (null === $metadata) {
-            throw new LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
+            throw new \LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
         }
 
         return $metadata->getName();
@@ -96,19 +94,19 @@ final class QueryBuilderHelper
             }
         }
 
-        throw new LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
+        throw new \LogicException(sprintf('The alias "%s" does not exist in the QueryBuilder.', $alias));
     }
 
     /**
      * Traverses through the joins for an alias used in the QueryBuilder.
      *
-     * @return Generator<string, array>
+     * @return \Generator<string, array>
      */
     public static function traverseJoins(
         string $alias,
         QueryBuilder $queryBuilder,
         ManagerRegistry $managerRegistry,
-    ): Generator {
+    ): \Generator {
         $rootAliasMap = self::mapRootAliases($queryBuilder->getRootAliases(), $queryBuilder->getRootEntities());
 
         $joinParts = $queryBuilder->getDQLPart('join');
@@ -125,7 +123,7 @@ final class QueryBuilderHelper
 
         while (null === $apexEntityClass) {
             if (!isset($aliasMap[$currentAlias])) {
-                throw new LogicException(sprintf('Unknown alias "%s".', $currentAlias));
+                throw new \LogicException(sprintf('Unknown alias "%s".', $currentAlias));
             }
 
             if (is_string($aliasMap[$currentAlias])) {
@@ -168,8 +166,8 @@ final class QueryBuilderHelper
         QueryBuilder $queryBuilder,
         string $alias,
         string $association,
-        string|null $originAlias = null,
-    ): Join|null {
+        ?string $originAlias = null,
+    ): ?Join {
         $parts = $queryBuilder->getDQLPart('join');
         $rootAlias = $originAlias ?? $queryBuilder->getRootAliases()[0];
 
@@ -196,7 +194,7 @@ final class QueryBuilderHelper
     {
         $aliasMap = array_combine($rootAliases, $rootEntities);
         if (false === $aliasMap) {
-            throw new LogicException('Number of root aliases and root entities do not match.');
+            throw new \LogicException('Number of root aliases and root entities do not match.');
         }
 
         return $aliasMap;

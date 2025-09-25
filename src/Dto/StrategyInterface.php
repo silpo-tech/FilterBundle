@@ -6,7 +6,7 @@ namespace FilterBundle\Dto;
 
 interface StrategyInterface
 {
-    public function findStrategy(string $field): string|null;
+    public function findStrategy(string $field): ?string;
 
     public function setStrategies(array $strategies);
 }

@@ -9,7 +9,6 @@ use FilterBundle\Validator\Constraints\ValidDateRange;
 use FilterBundle\Validator\Constraints\ValidDateRangeValidator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use TypeError;
 
 class ValidDateRangeValidatorTest extends ValidatorTestCase
 {
@@ -23,7 +22,7 @@ class ValidDateRangeValidatorTest extends ValidatorTestCase
         yield 'bad constraint' => [
             'value' => [],
             'constraint' => null,
-            'expectedException' => TypeError::class,
+            'expectedException' => \TypeError::class,
         ];
 
         yield 'skip null' => [

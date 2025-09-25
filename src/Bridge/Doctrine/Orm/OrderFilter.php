@@ -20,7 +20,7 @@ class OrderFilter extends AbstractFilter implements FilterInterface, OrderFilter
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (!$this->isPropertyMapped($property, $resourceClass)) {
@@ -49,9 +49,9 @@ class OrderFilter extends AbstractFilter implements FilterInterface, OrderFilter
         $qb->addOrderBy(sprintf('%s.%s', $alias, $field), $value);
     }
 
-    private function normalizeValue($value): string|null
+    private function normalizeValue($value): ?string
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 

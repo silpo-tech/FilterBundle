@@ -8,7 +8,7 @@ trait StrategyTrait
 {
     protected array $strategies = [];
 
-    public function findStrategy(string $field): string|null
+    public function findStrategy(string $field): ?string
     {
         return $this->strategies[$field] ?? null;
     }

@@ -29,6 +29,6 @@ class BundleKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/Resources/config.yaml');
+        $loader->load(__DIR__.'/Resources/config.yaml');
     }
 }

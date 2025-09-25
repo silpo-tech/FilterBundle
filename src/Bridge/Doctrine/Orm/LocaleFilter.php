@@ -46,7 +46,7 @@ class LocaleFilter extends AbstractFilter implements FilterInterface
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (

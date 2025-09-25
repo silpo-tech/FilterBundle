@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace FilterBundle\Annotation;
 
-use Attribute;
-
-#[Attribute(
-    Attribute::IS_REPEATABLE |
-    Attribute::TARGET_CLASS |
-    Attribute::TARGET_METHOD |
-    Attribute::TARGET_PROPERTY,
+#[\Attribute(
+    \Attribute::IS_REPEATABLE |
+    \Attribute::TARGET_CLASS |
+    \Attribute::TARGET_METHOD |
+    \Attribute::TARGET_PROPERTY,
 )]
 class ApiSort extends AbstractAnnotation
 {

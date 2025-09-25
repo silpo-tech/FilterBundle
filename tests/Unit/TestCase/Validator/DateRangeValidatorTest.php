@@ -9,7 +9,6 @@ use FilterBundle\Validator\Constraints\DateRange;
 use FilterBundle\Validator\Constraints\DateRangeValidator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use TypeError;
 
 class DateRangeValidatorTest extends ValidatorTestCase
 {
@@ -23,7 +22,7 @@ class DateRangeValidatorTest extends ValidatorTestCase
         yield 'bad constraint' => [
             'value' => [],
             'constraint' => null,
-            'expectedException' => TypeError::class,
+            'expectedException' => \TypeError::class,
         ];
 
         yield 'value is not array' => [

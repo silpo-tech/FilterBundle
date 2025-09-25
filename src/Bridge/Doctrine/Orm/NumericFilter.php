@@ -8,7 +8,6 @@ use Doctrine\DBAL\Types\Types as DBALTypes;
 use Doctrine\ORM\QueryBuilder;
 use FilterBundle\Bridge\Doctrine\Orm\PopertyHelperTrait as OrmPropertyHelperTrait;
 use FilterBundle\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use InvalidArgumentException;
 
 class NumericFilter extends AbstractFilter implements FilterInterface
 {
@@ -28,7 +27,7 @@ class NumericFilter extends AbstractFilter implements FilterInterface
         string $resourceClass,
         string $property,
         $value,
-        string|null $strategy = null,
+        ?string $strategy = null,
         array $arguments = [],
     ) {
         if (
@@ -69,7 +68,7 @@ class NumericFilter extends AbstractFilter implements FilterInterface
         }
     }
 
-    protected function getType(string|null $doctrineType = null): string
+    protected function getType(?string $doctrineType = null): string
     {
         if (null === $doctrineType || DBALTypes::DECIMAL === $doctrineType) {
             return 'string';
@@ -90,13 +89,13 @@ class NumericFilter extends AbstractFilter implements FilterInterface
         return isset(self::DOCTRINE_NUMERIC_TYPES[(string) $this->getDoctrineFieldType($property, $resourceClass)]);
     }
 
-    protected function normalizeValues($value, string $property): array|null
+    protected function normalizeValues($value, string $property): ?array
     {
         if (!is_numeric($value) && (!is_array($value) || !$this->isNumericArray($value))) {
             $this->logger->notice(
                 'Invalid filter ignored',
                 [
-                    'exception' => new InvalidArgumentException(
+                    'exception' => new \InvalidArgumentException(
                         sprintf('Invalid numeric value for "%s" property', $property),
                     ),
                 ],
@@ -120,9 +119,9 @@ class NumericFilter extends AbstractFilter implements FilterInterface
             $this->logger->notice(
                 'Invalid filter ignored',
                 [
-                    'exception' => new InvalidArgumentException(
+                    'exception' => new \InvalidArgumentException(
                         sprintf(
-                            'At least one value is required, multiple values should be in ' .
+                            'At least one value is required, multiple values should be in '.
                             '"%1$s[]=firstvalue&%1$s[]=secondvalue" format',
                             $property,
                         ),

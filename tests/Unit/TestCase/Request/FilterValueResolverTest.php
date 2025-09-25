@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\TestCase\Request;
 
-use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
 use FilterBundle\Annotation\ApiFilter;
 use FilterBundle\Annotation\FilterMapper;
 use FilterBundle\Dto\OrderInterface;
@@ -12,6 +11,7 @@ use FilterBundle\Dto\StrategyInterface;
 use FilterBundle\Request\FilterValueResolver;
 use MapperBundle\Mapper\MapperInterface;
 use PHPUnit\Framework\TestCase;
+use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

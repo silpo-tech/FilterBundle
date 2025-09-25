@@ -8,7 +8,6 @@ use App\Tests\Unit\TestCase\ValidatorTestCase;
 use FilterBundle\Validator\Constraints\DateRangeBeforeGreaterThanAfter;
 use FilterBundle\Validator\Constraints\DateRangeBeforeGreaterThanAfterValidator;
 use Symfony\Component\Validator\ConstraintValidator;
-use TypeError;
 
 class DateRangeBeforeGreaterThanAfterValidatorTest extends ValidatorTestCase
 {
@@ -22,7 +21,7 @@ class DateRangeBeforeGreaterThanAfterValidatorTest extends ValidatorTestCase
         yield 'bad constraint' => [
             'value' => [],
             'constraint' => null,
-            'expectedException' => TypeError::class,
+            'expectedException' => \TypeError::class,
         ];
 
         yield 'skip if not array' => [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FilterBundle\Validator\Constraints;
 
-use DateTime;
 use FilterBundle\Bridge\Doctrine\Orm\DateFilter;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,7 +18,7 @@ class ValidDateRangeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ValidDateRange::class);
         }
 
-        if ($value === null) {
+        if (null === $value) {
             return;
         }
 
@@ -35,6 +34,7 @@ class ValidDateRangeValidator extends ConstraintValidator
                 || !$this->isValidValue($val, $constraint->format)
             ) {
                 $notValid = true;
+
                 break;
             }
         }
@@ -46,11 +46,11 @@ class ValidDateRangeValidator extends ConstraintValidator
 
     private function isValidValue($value, string $format): bool
     {
-        if (($value === null) || !is_string($value)) {
+        if ((null === $value) || !is_string($value)) {
             return false;
         }
 
-        $date = DateTime::createFromFormat($format, $value);
+        $date = \DateTime::createFromFormat($format, $value);
 
         return $date && $date->format($format) === $value;
     }
