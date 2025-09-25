@@ -1,0 +1,18 @@
+framework:
+  test: true
+
+services:
+  FilterBundle\Service\ConditionBuilder:
+    public: true
+    arguments:
+      $filterLocator: !tagged_locator orm.filter
+
+doctrine:
+  dbal: ~
+  orm:
+    mappings:
+      TestEntities:
+        type: attribute
+        dir: '%kernel.project_dir%/tests/Integration/Common/Entity'
+        prefix: 'App\Tests\Integration\Common\Entity'
+        alias: TestEntities

@@ -1,0 +1,24 @@
+#doctrine:
+#  orm:
+#    report_fields_where_declared: true
+#    enable_lazy_ghost_objects: true
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  FilterBundle\:
+    resource: '../../*'
+    exclude: '../../{DependencyInjection,Bridge/Doctrine/Orm/Util}'
+
+  FilterBundle\Bridge\Doctrine\Orm\AbstractFilter:
+    class: FilterBundle\Bridge\Doctrine\Orm\AbstractFilter
+
+  _instanceof:
+    FilterBundle\Bridge\Doctrine\Orm\FilterInterface:
+      tags: [ 'orm.filter' ]
+
+  FilterBundle\Service\ConditionBuilder:
+    arguments:
+      $filterLocator: !tagged_locator orm.filter

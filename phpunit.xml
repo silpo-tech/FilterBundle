@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" backupGlobals="false" colors="true"
+        cacheResult="false" cacheDirectory=".phpunit.cache"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        displayDetailsOnPhpunitDeprecations="true"
+        bootstrap="tests/bootstrap.php"
+>
+    <php>
+        <env name="KERNEL_CLASS" value="App\Tests\Integration\BundleKernel"/>
+        <env name="APP_ENV" value="test" force="true"/>
+        <env name="APP_DEBUG" value="yes" force="true"/>
+    </php>
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src/</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">src/Dto</directory>
+            <directory suffix=".php">src/Bridge/Doctrine/Orm/Util</directory>
+        </exclude>
+    </source>
+</phpunit>
