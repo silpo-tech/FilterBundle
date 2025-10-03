@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FilterBundle\Request;
 
+use ExceptionHandlerBundle\Exception\ValidationException;
 use FilterBundle\Annotation\FilterMapper;
 use FilterBundle\Dto\OrderInterface;
 use FilterBundle\Dto\StrategyInterface;
 use MapperBundle\Mapper\MapperInterface;
-use ExceptionHandlerBundle\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
