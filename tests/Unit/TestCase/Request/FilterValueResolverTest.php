@@ -11,7 +11,7 @@ use FilterBundle\Dto\StrategyInterface;
 use FilterBundle\Request\FilterValueResolver;
 use MapperBundle\Mapper\MapperInterface;
 use PHPUnit\Framework\TestCase;
-use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
+use ExceptionHandlerBundle\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

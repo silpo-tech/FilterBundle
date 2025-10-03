@@ -8,7 +8,7 @@ use FilterBundle\Annotation\FilterMapper;
 use FilterBundle\Dto\OrderInterface;
 use FilterBundle\Dto\StrategyInterface;
 use MapperBundle\Mapper\MapperInterface;
-use SilpoTech\ExceptionHandlerBundle\Exception\ValidationException;
+use ExceptionHandlerBundle\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
