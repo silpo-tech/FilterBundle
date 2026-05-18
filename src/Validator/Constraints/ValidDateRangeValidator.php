@@ -14,7 +14,7 @@ class ValidDateRangeValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!($constraint instanceof ValidDateRange)) {
+        if (!$constraint instanceof ValidDateRange) {
             throw new UnexpectedTypeException($constraint, ValidDateRange::class);
         }
 
