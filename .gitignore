@@ -8,3 +8,6 @@ reports
 .php-cs-fixer.cache
 var
 .env.test.local
+vendor/*
+/.idea/
+reports/

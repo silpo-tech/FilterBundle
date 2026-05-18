@@ -206,6 +206,54 @@ Example syntax for exact strategy:
 
 Usage syntax: `?filter[createdAt][from]=2022-05&filter[createdAt][to]=2022-06`
 
+#### Managing `null` Values
+
+The date filter is able to deal with date properties having `null` values.
+Four behaviors are available at the property level of the filter via the `arguments` parameter:
+
+| Description                          | Strategy to set                  |
+|--------------------------------------|----------------------------------|
+| Use the default behavior of the DBMS | `null` (default)                 |
+| Exclude items                        | `exclude_null`                   |
+| Consider items as oldest             | `include_null_before`            |
+| Consider items as youngest           | `include_null_after`             |
+| Always include items                 | `include_null_before_and_after`  |
+
+To configure null management for a date property, pass the `nullManagement` key in the `arguments` array of the `#[ApiFilter]` attribute:
+
+```php
+use FilterBundle\Annotation\ApiFilter;
+use FilterBundle\Bridge\Doctrine\Orm\DateFilter;
+
+class EntityDTOFilter
+{
+    #[ApiFilter(DateFilter::class, property: 'deletedAt', arguments: ['nullManagement' => 'exclude_null'])]
+    /** @var array */
+    public $deletedAt = [];
+
+    #[ApiFilter(DateFilter::class, property: 'archivedAt', arguments: ['nullManagement' => 'include_null_before_and_after'])]
+    /** @var array */
+    public $archivedAt = [];
+}
+```
+
+**Behavior details:**
+
+- `exclude_null` — adds `IS NOT NULL` condition, completely excluding records where the date field is `null`.
+- `include_null_before` — when filtering with `to`/`strictly_to`, records with `null` are included in the results (treated as oldest).
+- `include_null_after` — when filtering with `from`/`strictly_from`, records with `null` are included in the results (treated as youngest).
+- `include_null_before_and_after` — records with `null` are always included regardless of the filter direction.
+
+You can also combine `nullManagement` with other DateFilter arguments like `compareDateToDateTime` or `convertToTz`:
+
+```php
+#[ApiFilter(DateFilter::class, property: 'createdAt', arguments: [
+    'nullManagement' => 'include_null_after',
+    'convertToTz' => 'UTC',
+])]
+public $createdAt = [];
+```
+
 ### Order Filter (Sorting)
 
 The order filter allows to sort a collection against the given properties.

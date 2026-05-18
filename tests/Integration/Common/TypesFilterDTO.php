@@ -30,6 +30,12 @@ class TypesFilterDTO
     #[ApiFilter(DateFilter::class, property: 'date', arguments: ['convertToTz' => 'UTC'])]
     public $dateTz;
 
+    #[ApiFilter(DateFilter::class, property: 'date', arguments: ['nullManagement' => 'include_null_before_and_after'])]
+    public $dateNullManagement;
+
+    #[ApiFilter(DateFilter::class, property: 'date', arguments: ['nullManagement' => 'exclude_null'])]
+    public $dateExcludeNull;
+
     #[ApiFilter(NumericFilter::class, property: 'numeric')]
     public $numeric;
 
