@@ -74,16 +74,16 @@ class ConditionBuilderTest extends KernelTestCase
             foreach ($whereParts as $part) {
                 if ($part instanceof Composite) {
                     if ($part instanceof Orx) {
-                        $separator = 'OR';
+                        $separator = ' OR ';
                     } else {
                         if ($part instanceof Andx) {
-                            $separator = 'AND';
+                            $separator = ' AND ';
                         } else {
-                            $separator = 'UNKNOWN';
+                            $separator = ' UNKNOWN ';
                         }
                     }
 
-                    $part = $part->getParts()[0].' '.$separator;
+                    $part = implode($separator, $part->getParts());
                 }
 
                 foreach ($params as $param) {
@@ -169,6 +169,31 @@ class ConditionBuilderTest extends KernelTestCase
             ],
             'expectedConditions' => [
                 "a.date < '1999-12-31'",
+            ],
+        ];
+
+        yield 'Date filter with include_null_before_and_after' => [
+            'filters' => [
+                'dateNullManagement' => [
+                    'from' => '2000-01-01',
+                    'to' => '2000-01-31',
+                ],
+            ],
+            'expectedConditions' => [
+                "a.date <= '2000-01-31' OR a.date IS NULL",
+                "a.date >= '2000-01-01' OR a.date IS NULL",
+            ],
+        ];
+
+        yield 'Date filter with exclude_null' => [
+            'filters' => [
+                'dateExcludeNull' => [
+                    'from' => '2000-01-01',
+                ],
+            ],
+            'expectedConditions' => [
+                'a.date IS NOT NULL',
+                "a.date >= '2000-01-01'",
             ],
         ];
 
@@ -353,7 +378,7 @@ class ConditionBuilderTest extends KernelTestCase
                 'field' => 'value',
             ],
             'expectedConditions' => [
-                "a.id = 'value' OR",
+                "a.id = 'value'",
             ],
             'expectedSorts' => [],
             'filterDTO' => MatchOrNotNullFilterDTO::class,

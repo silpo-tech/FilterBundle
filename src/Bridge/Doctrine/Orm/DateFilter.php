@@ -56,7 +56,7 @@ class DateFilter extends AbstractFilter implements FilterInterface, DateFilterIn
                 $resourceClass,
             );
         }
-        $nullManagement = $this->properties[$property] ?? null;
+        $nullManagement = $arguments['nullManagement'] ?? null;
         $type = (string) $this->getDoctrineFieldType($property, $resourceClass);
 
         if (self::EXCLUDE_NULL === $nullManagement) {

@@ -13,7 +13,7 @@ class DateRangeBeforeGreaterThanAfterValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!($constraint instanceof DateRangeBeforeGreaterThanAfter)) {
+        if (!$constraint instanceof DateRangeBeforeGreaterThanAfter) {
             throw new UnexpectedTypeException($constraint, DateRangeBeforeGreaterThanAfter::class);
         }
 
