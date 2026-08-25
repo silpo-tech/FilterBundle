@@ -211,10 +211,23 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
             default:
                 throw new \InvalidArgumentException(sprintf('strategy %s does not exist.', $strategy));
         }
+
+        if (self::STRATEGY_EXACT !== $strategy) {
+            $value = $this->escapeLikeValue($value);
+        }
+
         $queryBuilder
             ->andWhere(sprintf($format, $alias, $field, $valueParameter))
             ->setParameter($valueParameter, $value)
         ;
+    }
+
+    /**
+     * Escapes special SQL LIKE wildcard characters so they are matched literally.
+     */
+    private function escapeLikeValue(string $value): string
+    {
+        return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
     }
 
     /**

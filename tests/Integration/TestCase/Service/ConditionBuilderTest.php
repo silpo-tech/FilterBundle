@@ -334,6 +334,69 @@ class ConditionBuilderTest extends KernelTestCase
             ],
         ];
 
+        yield 'Search by partial strategy escapes percent character' => [
+            'filters' => [
+                'partial' => '100%',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('%', '100\\%', '%')",
+            ],
+        ];
+
+        yield 'Search by partial strategy escapes underscore character' => [
+            'filters' => [
+                'partial' => 'some_value',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('%', 'some\\_value', '%')",
+            ],
+        ];
+
+        yield 'Search by partial strategy escapes backslash character' => [
+            'filters' => [
+                'partial' => 'path\\to',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('%', 'path\\\\to', '%')",
+            ],
+        ];
+
+        yield 'Search by partial strategy escapes multiple special characters' => [
+            'filters' => [
+                'partial' => '50%_off\\sale',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('%', '50\\%\\_off\\\\sale', '%')",
+            ],
+        ];
+
+        yield 'Search by start strategy escapes special characters' => [
+            'filters' => [
+                'start' => '100%_value',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('100\\%\\_value', '%')",
+            ],
+        ];
+
+        yield 'Search by end strategy escapes special characters' => [
+            'filters' => [
+                'end' => '100%_value',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('%', '100\\%\\_value')",
+            ],
+        ];
+
+        yield 'Search by word start strategy escapes special characters' => [
+            'filters' => [
+                'wordStart' => '100%',
+            ],
+            'expectedConditions' => [
+                "a.id LIKE CONCAT('100\\%', '%') OR a.id LIKE CONCAT('% ', '100\\%', '%')",
+            ],
+        ];
+
         yield 'Search by unknown strategy' => [
             'filters' => [
                 'wrongStrategy' => 'one',
