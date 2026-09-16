@@ -48,6 +48,9 @@ class TypesFilterDTO
     #[ApiFilter(SearchFilter::class, property: 'child.id', strategy: SearchFilterInterface::STRATEGY_EXACT)]
     public $exact;
 
+    #[ApiFilter(SearchFilter::class, property: 'child', strategy: SearchFilterInterface::STRATEGY_EXACT)]
+    public $childAssociation;
+
     #[ApiFilter(SearchFilter::class, property: 'numeric', strategy: SearchFilterInterface::STRATEGY_EXACT)]
     public $exactNumeric;
 
