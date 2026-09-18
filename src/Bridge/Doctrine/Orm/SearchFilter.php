@@ -63,6 +63,14 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
             }
 
             if (1 === count($values)) {
+                // An empty search term is meaningless for LIKE strategies
+                // (it degrades to LIKE '%%' matching everything); skip it so the
+                // filter becomes a no-op. EXACT stays untouched — matching an
+                // empty string exactly is a legitimate predicate.
+                if ('' === $values[0] && self::STRATEGY_EXACT !== $strategy) {
+                    return;
+                }
+
                 $this->addWhereByStrategy($strategy, $qb, $nameGenerator, $alias, $field, $values[0], $caseSensitive);
 
                 return;
@@ -97,6 +105,13 @@ class SearchFilter extends AbstractFilter implements FilterInterface, SearchFilt
 
         $associationFieldIdentifier = 'id';
         $doctrineTypeField = $this->getDoctrineFieldType($property, $resourceClass);
+
+        // An empty string is never a valid association identifier, so drop such
+        // values; if nothing meaningful remains the filter becomes a no-op.
+        $values = array_values(array_filter($values, static fn (string $v): bool => '' !== $v));
+        if ([] === $values) {
+            return;
+        }
 
         if (!$this->hasValidValues($values, $doctrineTypeField)) {
             $message = sprintf('Values for field "%s" are not valid according to the doctrine type.', $field);

@@ -60,6 +60,10 @@ class ConditionBuilderTest extends KernelTestCase
 
         if ($expectedEmptyConditions) {
             self::assertEmpty($expectedConditions);
+
+            $dqlWherePart = $queryBuilder->getDQLPart('where');
+            $actualWhereParts = null === $dqlWherePart ? [] : $dqlWherePart->getParts();
+            self::assertSame([], $actualWhereParts, 'Expected the filter to add no WHERE condition.');
         }
 
         if (count($expectedConditions) > 0) {
@@ -314,6 +318,60 @@ class ConditionBuilderTest extends KernelTestCase
             'expectedConditions' => [
                 "a.id LIKE CONCAT('%', 'one')",
             ],
+        ];
+
+        yield 'Empty partial search is a no-op' => [
+            'filters' => [
+                'partial' => '',
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Empty start search is a no-op' => [
+            'filters' => [
+                'start' => '',
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Empty end search is a no-op' => [
+            'filters' => [
+                'end' => '',
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Empty word start search is a no-op' => [
+            'filters' => [
+                'wordStart' => '',
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Empty exact search is preserved (empty equality is a valid predicate)' => [
+            'filters' => [
+                'iexact' => [''],
+            ],
+            'expectedConditions' => [
+                "LOWER(a.id) = LOWER('')",
+            ],
+        ];
+
+        yield 'Empty association identifier is a no-op' => [
+            'filters' => [
+                'childAssociation' => '',
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'expectedEmptyConditions' => true,
         ];
 
         yield 'Search by invalid value' => [
