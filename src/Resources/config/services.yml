@@ -10,7 +10,7 @@ services:
 
   FilterBundle\:
     resource: '../../*'
-    exclude: '../../{DependencyInjection,Bridge/Doctrine/Orm/Util}'
+    exclude: '../../{DependencyInjection,Bridge/Doctrine/Orm/Util,Bridge/Doctrine/Orm/Dql}'
 
   FilterBundle\Bridge\Doctrine\Orm\AbstractFilter:
     class: FilterBundle\Bridge\Doctrine\Orm\AbstractFilter

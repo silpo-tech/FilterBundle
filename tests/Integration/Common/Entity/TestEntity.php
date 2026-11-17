@@ -33,6 +33,9 @@ class TestEntity
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private mixed $locale;
 
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
+    private array $jsonb;
+
     #[ORM\ManyToOne(targetEntity: self::class)]
     private TestEntity $child;
 }

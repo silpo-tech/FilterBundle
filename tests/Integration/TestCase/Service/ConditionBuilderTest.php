@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Integration\TestCase\Service;
 
 use App\Tests\Integration\Common\Entity\TestEntity;
+use App\Tests\Integration\Common\JsonbContainsAnyFilterDTO;
 use App\Tests\Integration\Common\LocaleFilterDTO;
 use App\Tests\Integration\Common\MatchOrNotNullFilterDTO;
 use App\Tests\Integration\Common\TypesFilterDTO;
@@ -532,6 +533,80 @@ class ConditionBuilderTest extends KernelTestCase
             ],
             'expectedSorts' => [],
             'filterDTO' => LocaleFilterDTO::class,
+        ];
+
+        yield 'Jsonb contains any filter with single value' => [
+            'filters' => [
+                'jsonb' => ['first'],
+            ],
+            'expectedConditions' => [
+                "JSONB_CONTAINS(a.jsonb, '[\"first\"]') = true",
+            ],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+        ];
+
+        yield 'Jsonb contains any filter with scalar value' => [
+            'filters' => [
+                'jsonb' => 'first',
+            ],
+            'expectedConditions' => [
+                "JSONB_CONTAINS(a.jsonb, '[\"first\"]') = true",
+            ],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+        ];
+
+        yield 'Jsonb contains any filter with multiple values (OR)' => [
+            'filters' => [
+                'jsonb' => ['first', 'second'],
+            ],
+            'expectedConditions' => [
+                "JSONB_CONTAINS(a.jsonb, '[\"first\"]') = true OR JSONB_CONTAINS(a.jsonb, '[\"second\"]') = true",
+            ],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+        ];
+
+        yield 'Jsonb contains any filter with nested property' => [
+            'filters' => [
+                'childJsonb' => ['first'],
+            ],
+            'expectedConditions' => [
+                "JSONB_CONTAINS(child_a1.jsonb, '[\"first\"]') = true",
+            ],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+        ];
+
+        yield 'Jsonb contains any filter with empty value' => [
+            'filters' => [
+                'jsonb' => [],
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Jsonb contains any filter with not scalar value' => [
+            'filters' => [
+                'jsonb' => [['first']],
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+            'expectedEmptyConditions' => true,
+        ];
+
+        yield 'Jsonb contains any filter on not json field' => [
+            'filters' => [
+                'notJson' => ['first'],
+            ],
+            'expectedConditions' => [],
+            'expectedSorts' => [],
+            'filterDTO' => JsonbContainsAnyFilterDTO::class,
+            'expectedEmptyConditions' => true,
         ];
     }
 }

@@ -254,6 +254,30 @@ You can also combine `nullManagement` with other DateFilter arguments like `comp
 public $createdAt = [];
 ```
 
+### Jsonb Contains Any Filter
+
+PostgreSQL only. Selects entities whose `jsonb` array column contains **at least one** of the given values (OR):
+
+```php
+#[ApiFilter(JsonbContainsAnyFilter::class, property: 'labels')]
+public mixed $labels = null;
+```
+
+`?filter[labels][]=first&filter[labels][]=second` produces
+`(labels @> '["first"]'::jsonb) OR (labels @> '["second"]'::jsonb)`. The property must be a mapped `json`/`jsonb`
+field (nested properties like `relation.labels` are supported); a single scalar is treated as a list of one value,
+empty and non-scalar values are ignored.
+
+The filter relies on the `JSONB_CONTAINS` DQL function, which has to be registered in the application:
+
+```yaml
+doctrine:
+  orm:
+    dql:
+      string_functions:
+        JSONB_CONTAINS: FilterBundle\Bridge\Doctrine\Orm\Dql\JsonbContains
+```
+
 ### Order Filter (Sorting)
 
 The order filter allows to sort a collection against the given properties.

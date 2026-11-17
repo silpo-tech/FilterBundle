@@ -91,6 +91,12 @@ parameters:
 			path: tests/Integration/Common/Entity/TestEntity.php
 
 		-
+			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$jsonb is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/Integration/Common/Entity/TestEntity.php
+
+		-
 			message: '#^Property App\\Tests\\Integration\\Common\\Entity\\TestEntity\:\:\$locale is unused\.$#'
 			identifier: property.unused
 			count: 1
